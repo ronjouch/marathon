@@ -14,7 +14,8 @@ Installation
 1. Install `wmctrl`
 2. Drop the script somewhere (e.g. `~/.scripts/marathon`) and link it to somewhere in your `$PATH`, e.g. `sudo ln -s ~/.scripts/marathon /usr/local/sbin/marathon`
 3. Bind `marathon command` to some keyboard shortcut:
-    * GNOME → System Settings → *Keyboard* section → *Shortcut* tab → *Custom Shortcuts*
+    * GNOME → System Settings → *Keyboard* section → *Shortcut* tab → *Custom Shortcuts*. Mine look like:  
+    ![GNOME Keyboard Settings screenshot](gnome-keyboard-settings-screenshot.png)
     * LXDE → your `lxde-rc.xml`
 
 Todo
