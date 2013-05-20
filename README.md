@@ -25,7 +25,7 @@ Todo
 * (Maybe) use xdotool, it looks simpler
 * (Maybe) if app runs and focused, then minimize it
 
-License
--------
+License and contact
+-------------------
 
-Licenced under the WTFPL, 2012-2013, [ronan@jouchet.fr](mailto:ronan@jouchet.fr)
+Licenced under the WTFPL, 2012-2013, [ronan@jouchet.fr](mailto:ronan@jouchet.fr) / [@ronjouch](https://twitter.com/ronjouch)
