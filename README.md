@@ -6,7 +6,7 @@ marathon
 * if *SomeApplication* is not running, marathon will **run** it
 * else marathon will just **focus** it
 
-That way, after binding your favorite apps to a few easily-accessible keyboard shortcuts, you can access them with a single keypress and forget about alt-tab or clicking it in the dock / selector.
+That way, after binding your favorite apps to a few easily-accessible keyboard shortcuts, you can access them with a single keypress and forget about alt-tabbing or clicking on stuff in your dock / selector.
 
 Installation
 ------------
