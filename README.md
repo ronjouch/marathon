@@ -28,4 +28,4 @@ Todo
 License and contact
 -------------------
 
-Licenced under the WTFPL, 2012-2013, [ronan@jouchet.fr](mailto:ronan@jouchet.fr) / [@ronjouch](https://twitter.com/ronjouch)
+Licensed under the WTFPL, 2012-2013, [ronan@jouchet.fr](mailto:ronan@jouchet.fr) / [@ronjouch](https://twitter.com/ronjouch)
