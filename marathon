@@ -17,13 +17,13 @@
 #   contain the executable name. Works for all my apps though.
 # - If app runs and focused, then minimize it
 # - Use xdotool, looks simpler but couldn't get my way around WM_CLASSES
-#
+
+runningInstancesOfExec=$(ps aux | grep -v grep | grep -v marathon | grep -c $1);
 # USEFUL DEBUG STUFF
 # focusedWindowId=$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}'); #debug
 # zenity --info --text "$1, $runningInstancesOfExec, $focusedWindowId"; #debug
 
-runningInstancesOfExec=$(ps aux | grep -c $1);
-if [ $runningInstancesOfExec -gt 3 ]
+if [ $runningInstancesOfExec -gt 0 ]
   then
     exec wmctrl -x -a $1;
   else
