@@ -1,6 +1,5 @@
 #! /bin/sh
-# Licensed under the BSD license
-# See documentation in README.md. License:WTFPL, 2012-2013, ronan@jouchet.fr
+# See documentation in README.md. License:BSD, 2012-2013, ronan@jouchet.fr
 
 runningInstancesOfExec=$(ps aux | grep -v grep | grep -v marathon | grep -c $1);
 # focusedWindowId=$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}'); # useful for debug
