@@ -1,4 +1,5 @@
 #! /bin/sh
+# Licensed under the BSD license
 # See documentation in README.md. License:WTFPL, 2012-2013, ronan@jouchet.fr
 
 runningInstancesOfExec=$(ps aux | grep -v grep | grep -v marathon | grep -c $1);
