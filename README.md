@@ -21,9 +21,12 @@ Installation
 Todo
 ----
 
+[Bug Reports](https://github.com/ronjouch/marathon/issues) and [Pull Requests](https://github.com/ronjouch/marathon/pulls) are welcome via GitHub. Help very much needed especially in these areas:
+
+* Test and fix for other *nixes (currently only tested under Ubuntu).
 * Proper handling of WM_CLASSES, currently it just assumes the class will contain the executable name. Works for all my apps though.
-* (Maybe) use xdotool, it looks simpler
-* (Maybe) if app runs and focused, then minimize it
+* (Maybe) use xdotool, it looks simpler.
+* (Maybe) if app runs and focused, then minimize it.
 
 License and contact
 -------------------
