@@ -1,14 +1,35 @@
 #! /bin/sh
-# See documentation in README.md. License:BSD, 2012-2013, ronan@jouchet.fr
+# See documentation and license in README.md
 
-runningInstancesOfExec=$(ps aux | grep -v grep | grep -v marathon | grep -c $1);
-# focusedWindowId=$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}'); # useful for debug
-# zenity --info --text "$1, $runningInstancesOfExec, $focusedWindowId"; # useful for debug
-
-if [ $runningInstancesOfExec -gt 0 ]
-  then
-    exec wmctrl -x -a $1;
-  else
-    exec $1;
+if [[ $1 == "--toggle" ]]; then
+	command=$2
+else
+	command=$1
 fi
-return;
+# zenity --info --text "$command"; # useful for debug
+
+runningInstancesOfExec=$(ps -a -x -o command | grep -v grep | grep -v defunct | grep -v marathon | grep -c $command);
+
+if [ $runningInstancesOfExec -gt 0 ]; then
+	if [[ $1 == "--toggle" ]]; then
+		# Determine active windowID, from https://github.com/dmikalova/brocket
+		# and http://superuser.com/questions/382616/detecting-currently-active-window
+		currentWindow="$(printf '0x%08x\n' $(xprop -root |
+						 grep "_NET_ACTIVE_WINDOW(WINDOW)" |
+						 grep -E -o 0x[0-9a-f]+))"
+
+		currentWindowIsCommand="$(wmctrl -lx |
+								  grep $currentWindow |
+			 					  grep -ci "^0x[0-9a-f]*\s*[0-9]\s*[^ ]*$command")"
+		if [ $currentWindowIsCommand -gt 0 ]; then
+			exec xdotool windowminimize $currentWindow
+		else
+			exec wmctrl -x -a $command;
+		fi
+	else
+		exec wmctrl -x -a $command;
+	fi
+else
+	exec $command;
+fi	
+
