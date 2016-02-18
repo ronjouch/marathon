@@ -1,38 +1,56 @@
 #! /bin/sh
-# See documentation and license in README.md
+# See documentation, requirements, license in README.md
 
-if [ "$1" = "--toggle" ]; then
-	shift
-	toggle=1
+toggle=0
+ignoreArgsOnFocus=0
+cmdForFocus=""
+
+# Nit: [[ "$1" == --* ]] would work here, but would be bash (globbing) only.
+while [ "$1" = "--toggle" ] || [ "$1" = "--ignore-args-on-focus" ]; do
+  if [ "$1" = "--toggle" ]; then
+    shift
+    toggle=1
+  elif [ "$1" = "--ignore-args-on-focus" ]; then
+    shift
+    ignoreArgsOnFocus=1
+  fi
+done
+
+# Done processing/shifting all arguments
+cmd="$*"
+if [ "$ignoreArgsOnFocus" = "1" ]; then
+  cmdForFocus="$1"
 else
-	toggle=0
+  cmdForFocus="$*"
 fi
 
-command="$*"
-# zenity --info --text "$command"; # useful for debug
-
-runningInstancesOfExec=$(ps -a -x -o command | grep -v grep | grep -v defunct | grep -v marathon | grep -c $command);
+runningInstancesOfExec=$(ps -a -x -o command |
+                         grep -v grep |
+                         grep -v defunct |
+                         grep -v marathon |
+                         grep -c "$cmdForFocus");
+# zenity --info --text "$runningInstancesOfExec"; # useful for debug
 
 if [ "$runningInstancesOfExec" -gt "0" ]; then
-	if [ "$toggle" = "1" ]; then
-		# Determine active windowID, from https://github.com/dmikalova/brocket
-		# and http://superuser.com/questions/382616/detecting-currently-active-window
-		currentWindow="$(printf '0x%08x\n' $(xprop -root |
-						 grep "_NET_ACTIVE_WINDOW(WINDOW)" |
-						 grep -E -o 0x[0-9a-f]+))"
+  if [ "$toggle" = "1" ]; then
+    # Determine active windowID, from https://github.com/dmikalova/brocket and
+    # http://superuser.com/questions/382616/detecting-currently-active-window
+    currentWindow="$(printf '0x%08x\n' $(xprop -root |
+                     grep "_NET_ACTIVE_WINDOW(WINDOW)" |
+                     grep -E -o '0x[0-9a-f]+'))"
 
-		currentWindowIsCommand="$(wmctrl -lx |
-								  grep $currentWindow |
-			 					  grep -ci "^0x[0-9a-f]*\s*[0-9]\s*[^ ]*$command")"
-		if [ "$currentWindowIsCommand" -gt 0 ]; then
-			exec xdotool windowminimize $currentWindow
-		else
-			exec wmctrl -x -a $command;
-		fi
-	else
-		exec wmctrl -x -a $command;
-	fi
+    currentWindowIsCommand="$(wmctrl -lx |
+                              grep $currentWindow |
+                              grep -ci "^0x[0-9a-f]*\s*[0-9]\s*[^ ]*$cmdForFocus")"
+    if [ "$currentWindowIsCommand" -gt 0 ]; then
+      exec xdotool windowminimize $currentWindow
+    else
+      # Try to find our command in both places (useful for some programs)
+      wmctrl -x -a $cmdForFocus || wmctrl -a $cmdForFocus;
+    fi
+  else
+    wmctrl -x -a $cmdForFocus || wmctrl -a $cmdForFocus;
+  fi
 else
-	exec $command;
+  exec $cmd;
 fi
-
