@@ -32,9 +32,11 @@ Installation
   [this guide](http://superuser.com/questions/245711/starting-application-with-custom-keyboard-shortcut)
 
 - **Linux**:
-    1. **Install `wmctrl` and `xdotool`** from your package manager.
-    2. Drop `marathon` somewhere in your `$PATH`.
-    3. Bind `marathon command` (optionally adding flags) to a keyboard shortcut:
+    1. X is required, as there is currently no equivalent to `wmctrl` and `xdotool` under Wayland.
+       You'll have to [disable Wayland](https://wiki.archlinux.org/index.php/GDM#Use_Xorg_backend).
+    2. **Install `wmctrl` and `xdotool`** from your package manager.
+    3. Drop `marathon` somewhere in your `$PATH`.
+    4. Bind `marathon command` (optionally adding flags) to a keyboard shortcut:
         * GNOME → Settings → *Keyboard* section → *Shortcut* tab → *Custom Shortcuts*.
           Mine look like:  
           ![GNOME Keyboard Settings screenshot](gnome-keyboard-settings-screenshot.png)
@@ -47,4 +49,4 @@ Support, license, contact
 [Pull Requests](https://github.com/ronjouch/marathon/pulls) are welcome.
 
 Licensed under the MIT license, 2012-2016,
-[ronan@jouchet.fr](mailto:ronan@jouchet.fr) / [@ronjouch](https://twitter.com/ronjouch)
+[Ronan Jouchet](mailto:firstname@lastname.fr) / [@ronjouch](https://twitter.com/ronjouch)
