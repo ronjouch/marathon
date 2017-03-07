@@ -24,11 +24,13 @@ else
   cmdForFocus="$*"
 fi
 
+# Final grep "linestart OR /" in order to find "code" and "/usr/share/code/code"
+# but NOT "google-chrome --disable-accelerated-video-decode
 runningInstancesOfExec=$(ps -a -x -o command |
                          grep -v grep |
                          grep -v defunct |
                          grep -v marathon |
-                         grep -c "$cmdForFocus");
+                         grep -c -e "\(^\|\/\)$cmdForFocus");
 # zenity --info --text "$runningInstancesOfExec"; # useful for debug
 
 if [ "$runningInstancesOfExec" -gt "0" ]; then
