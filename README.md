@@ -34,6 +34,7 @@ Installation
 - **Linux**:
     1. X is required, as there is currently no equivalent to `wmctrl` and `xdotool` under Wayland.
        You'll have to [disable Wayland](https://wiki.archlinux.org/index.php/GDM#Use_Xorg_backend).
+       Suggestions welcome on issue [#5 - Support Wayland](https://github.com/ronjouch/marathon/issues/5).
     2. **Install `wmctrl` and `xdotool`** from your package manager.
     3. Drop `marathon` somewhere in your `$PATH`.
     4. Bind `marathon command` (optionally adding flags) to a keyboard shortcut:
