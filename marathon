@@ -60,5 +60,6 @@ if [ "$runningInstancesOfExec" -gt "0" ]; then
     wmctrl -x -a "$cmdForFocus" || wmctrl -a "$cmdForFocus";
   fi
 else
-  exec "$cmd";
+  # shellcheck disable=SC2086
+  exec $cmd;
 fi
