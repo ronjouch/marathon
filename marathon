@@ -1,11 +1,18 @@
-#! /bin/sh
+#!/usr/bin/env sh
+# shellcheck disable=SC2009
 # See documentation, requirements, license in README.md
+
+missingDeps=false
+if ! command -v grep > /dev/null; then echo "Missing grep"; missingDeps=true; fi
+if ! command -v ps > /dev/null; then echo "Missing ps"; missingDeps=true; fi
+if ! command -v wmctrl > /dev/null; then echo "Missing wmctrl"; missingDeps=true; fi
+if ! command -v xdotool > /dev/null; then echo "Missing xdotool"; missingDeps=true; fi
+if [ $missingDeps = true ]; then exit 1; fi
 
 toggle=0
 ignoreArgsOnFocus=0
 cmdForFocus=""
 
-# Nit: [[ "$1" == --* ]] would work here, but would be bash (globbing) only.
 while [ "$1" = "--toggle" ] || [ "$1" = "--ignore-args-on-focus" ]; do
   if [ "$1" = "--toggle" ]; then
     shift
@@ -16,7 +23,6 @@ while [ "$1" = "--toggle" ] || [ "$1" = "--ignore-args-on-focus" ]; do
   fi
 done
 
-# Done processing/shifting all arguments
 cmd="$*"
 if [ "$ignoreArgsOnFocus" = "1" ]; then
   cmdForFocus="$1"
@@ -25,34 +31,34 @@ else
 fi
 
 # Final grep "linestart OR /" in order to find "code" and "/usr/share/code/code"
-# but NOT "google-chrome --disable-accelerated-video-decode
+# but NOT "google-chrome --disable-accelerated-video-decode"
 runningInstancesOfExec=$(ps -a -x -o command |
                          grep -v grep |
                          grep -v defunct |
                          grep -v marathon |
-                         grep -c -e "\(^\|\/\)$cmdForFocus");
+                         grep -c -e "\\(^\\|\\/\\)$cmdForFocus");
 # zenity --info --text "$runningInstancesOfExec"; # useful for debug
 
 if [ "$runningInstancesOfExec" -gt "0" ]; then
   if [ "$toggle" = "1" ]; then
-    # Determine active windowID, from https://github.com/dmikalova/brocket and
+    # Determine active windowID, see https://github.com/dmikalova/brocket and
     # http://superuser.com/questions/382616/detecting-currently-active-window
-    currentWindow="$(printf '0x%08x\n' $(xprop -root |
+    currentWindow="$(printf '0x%08x\n' "$(xprop -root |
                      grep "_NET_ACTIVE_WINDOW(WINDOW)" |
-                     grep -E -o '0x[0-9a-f]+'))"
+                     grep -E -o '0x[0-9a-f]+')")"
 
     currentWindowIsCommand="$(wmctrl -lx |
-                              grep $currentWindow |
-                              grep -ci "^0x[0-9a-f]*\s*[0-9]\s*[^ ]*$cmdForFocus")"
+                              grep "$currentWindow" |
+                              grep -ci "^0x[0-9a-f]*\\s*[0-9]\\s*[^ ]*$cmdForFocus")"
     if [ "$currentWindowIsCommand" -gt 0 ]; then
-      exec xdotool windowminimize $currentWindow
+      exec xdotool windowminimize "$currentWindow"
     else
       # Try to find our command in both places (useful for some programs)
-      wmctrl -x -a $cmdForFocus || wmctrl -a $cmdForFocus;
+      wmctrl -x -a "$cmdForFocus" || wmctrl -a "$cmdForFocus";
     fi
   else
-    wmctrl -x -a $cmdForFocus || wmctrl -a $cmdForFocus;
+    wmctrl -x -a "$cmdForFocus" || wmctrl -a "$cmdForFocus";
   fi
 else
-  exec $cmd;
+  exec "$cmd";
 fi
