@@ -9,7 +9,7 @@ smart about running or focusing apps. When calling `marathon application`,
 
 That way, after binding your favorite apps to a few easily-accessible OS
 global keyboard shortcuts, you can access them with a single keypress and
-**forget about alt-tabbing or clicking on app icons in your dock / window list**.
+**forget about alt-tabbing or clicking app icons in your dock / window list**.
 
 Flags:
 
@@ -21,15 +21,20 @@ Flags:
    passing them on initial run.
    - This is useful for applications who use a runner or spawn other processes,
      making ineffective post-exec searching for the fully-qualified command.
-   - This is *not* what you want if the process you want to focus needs arguments
-     to be uniquely identified (e.g. `gvim -S work`).
+   - This is *not* what you want if the process you want to focus needs
+     arguments to be uniquely identified (e.g. `gvim -S work`).
+
+* `--launch-closed` will use the active *window* list to determine if the
+  requested program is running. By default, marathon looks in the *process*
+  list. Useful to focus well-behaved single-instance programs closed to tray
+  that respond to a re-launch by activating the window (e.g. Slack).
 
 Installation
 ------------
 
 - **macOS is not supported**, sorry (due to depending on Xorg utilities).
   But rejoice, you'll be well served with Automator or Alfred, see for example
-  [this guide](http://superuser.com/questions/245711/starting-application-with-custom-keyboard-shortcut)
+  [this guide](https://superuser.com/questions/245711/starting-application-with-custom-keyboard-shortcut)
 
 - **Linux**:
     1. X is required, as there is (at time of writing) no equivalent
@@ -44,6 +49,9 @@ Installation
           Mine look like:  
           ![GNOME Keyboard Settings screenshot](gnome-keyboard-settings-screenshot.png)
         * LXDE → your `lxde-rc.xml`
+
+Nit: ensure the app process name (or window class if using `--launch-closed`)
+     matches the executable filename. If not, a symlink will do the trick.
 
 Support, license, contact
 -------------------------
