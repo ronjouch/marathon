@@ -8,7 +8,6 @@ if ! command -v ps > /dev/null; then echo "Missing ps"; missingDeps=true; fi
 if ! command -v awk > /dev/null; then echo "Missing awk"; missingDeps=true; fi
 if ! command -v wmctrl > /dev/null; then echo "Missing wmctrl"; missingDeps=true; fi
 if ! command -v xdotool > /dev/null; then echo "Missing xdotool"; missingDeps=true; fi
-if ! command -v nohup > /dev/null; then echo "Missing nohup"; missingDeps=true; fi
 if [ $missingDeps = true ]; then exit 1; fi
 
 toggle=0
@@ -75,6 +74,5 @@ if [ "$runningInstancesOfExec" -gt "0" ]; then
     wmctrl -x -a "$cmdForFocus" || wmctrl -a "$cmdForFocus";
   fi
 else
-  # shellcheck disable=SC2086
-  nohup $cmd &
+  $cmd >/dev/null 2>&1 &
 fi
