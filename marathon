@@ -74,5 +74,5 @@ if [ "$runningInstancesOfExec" -gt "0" ]; then
     wmctrl -x -a "$cmdForFocus" || wmctrl -a "$cmdForFocus";
   fi
 else
-  "$cmd" >/dev/null 2>&1 &
+  $cmd >/dev/null 2>&1 &
 fi
